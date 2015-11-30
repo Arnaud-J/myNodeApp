@@ -7,11 +7,16 @@ var client = new Twitter({
     access_token_key: '247943134-GJQICroCVObqgbncvv4JtzmOyJ3S4KkJVUJCZHOZ',
     access_token_secret: 'YlgAdvU1ZcYeKGiTpX8hZg7oYvEKvDHU11CqO3NeGgWch'
 });
+var json = [];
 
 http.createServer(function(request, response) {
     response.writeHead(200, { 'Content-Type': 'application/json',
         'Access-Control-Allow-Origin' : '*' });
     client.get('search/tweets', {q: 'lolcat'}, function(error, tweets){
-        response.end(JSON.stringify(tweets));
+        for (var i =0; i< tweets.statuses.length ; i++)
+        {
+            json.push({name: tweets.statuses[i].user.name, text: tweets.statuses[i].text});
+        }
+        response.end(JSON.stringify(json));
     });
 }).listen(port);
